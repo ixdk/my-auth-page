@@ -345,7 +345,7 @@ function goBackToEmailPage() {
  */
 function redirectToOtherSite() {
   // ЗАМЕНИТЕ ЭТУ ССЫЛКУ НА СВОЙ САЙТ
-  const otherSiteUrl = 'https://google.com';
+  const otherSiteUrl = 'https://ixdk.github.io/my-list-page/';
 
   document.body.style.opacity = '0.8';
   document.body.style.transition = 'opacity 0.5s ease';
