@@ -1,4 +1,806 @@
-@import '_mixins';
 @import '_variables';
-@import '_desktop.scss';
-@import '_responsive';
+@import '_mixins';
+
+.auth-page {
+  background: $bg-color;
+  min-height: 100vh;
+  font-family: $font-family;
+  color: $text-color;
+  @include fade-in;
+}
+
+.auth-wrapper {
+  @include flex-column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 1000px;
+  background: $card-bg;
+  border-radius: $border-radius;
+  padding: $card-padding;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  @include slide-up;
+  animation-delay: 0.1s;
+}
+
+.auth-header {
+  display: flex;
+  align-items: center;
+  gap: $gap-xs;
+  color: $secondary-text;
+  font-size: $font-size-base;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #3c4043;
+
+  .auth-logo {
+    width: 24px;
+    height: 24px;
+    transition: transform $transition-fast;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}
+
+.auth-content {
+  @include grid-columns(1fr 1fr);
+  gap: 3rem;
+  margin-top: 40px;
+}
+
+.auth-left {
+  @include flex-column;
+  justify-content: center;
+
+  h1 {
+    font-size: $font-size-large;
+    margin: $gap-small 0 $gap-xxs;
+    font-weight: 500;
+    line-height: 1.2;
+    @include fade-in;
+  }
+
+  p {
+    color: $secondary-text;
+    font-size: $font-size-medium;
+    @include fade-in;
+    animation-delay: 0.2s;
+    max-width: 100%;
+  }
+
+  .brand-icon {
+    width: 48px;
+    height: 48px;
+    transition: transform $transition-medium;
+
+    &:hover {
+      transform: rotate(5deg) scale(1.05);
+    }
+  }
+}
+
+.auth-right {
+  max-width: 420px;
+  @include fade-in;
+  animation-delay: 0.3s;
+
+  .form-group {
+    @include flex-column;
+    margin-bottom: $gap-xs;
+    position: relative;
+
+    label {
+      font-size: $font-size-base;
+      color: $primary-color;
+      margin-bottom: 4px;
+      font-weight: 500;
+      transition: all $transition-fast;
+
+      &.focused {
+        color: lighten($primary-color, 10%);
+      }
+    }
+
+    input {
+      @include input-style;
+      transition: all $transition-fast;
+      width: 100%;
+      box-sizing: border-box;
+
+      &.shaking {
+        animation: shake 0.5s;
+      }
+    }
+
+    .input-hint {
+      font-size: $font-size-xs;
+      color: $secondary-text;
+      margin-top: 4px;
+      opacity: 0;
+      height: 0;
+      overflow: hidden;
+      transition: all $transition-medium;
+
+      &.visible {
+        opacity: 1;
+        height: auto;
+        margin-top: 6px;
+      }
+    }
+
+    .error-message {
+      font-size: $font-size-xs;
+      color: $error-color;
+      margin-top: 4px;
+      opacity: 0;
+      height: 0;
+      overflow: hidden;
+      transition: all $transition-medium;
+
+      &.visible {
+        opacity: 1;
+        height: auto;
+        margin-top: 6px;
+      }
+    }
+  }
+
+  .link {
+    @include link-style;
+    display: inline-block;
+    transition: all $transition-fast;
+
+    &.forgot-link {
+      margin-top: $gap-xxs;
+
+      &:hover {
+        transform: translateX(2px);
+      }
+    }
+
+    &.create-account-link {
+      &:hover {
+        transform: translateX(-2px);
+      }
+    }
+  }
+
+  .policy {
+    margin: $gap-medium 0;
+    font-size: $font-size-base;
+    color: $secondary-text;
+    line-height: 1.5;
+    @include fade-in;
+    animation-delay: 0.4s;
+    width: 100%;
+    max-width: 420px;
+
+    a {
+      @include link-style;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .form-actions {
+    @include flex-between;
+    margin-top: $gap-small;
+    width: 100%;
+  }
+
+  .btn-primary {
+    @include button-primary;
+
+    &.loading {
+      position: relative;
+      color: transparent;
+
+      &::after {
+        content: '';
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        top: 50%;
+        left: 50%;
+        margin: -8px 0 0 -8px;
+        border: 2px solid $bg-color;
+        border-top-color: transparent;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+    }
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.auth-footer {
+  width: 100%;
+  max-width: 1000px;
+  @include flex-between;
+  margin-top: $gap-small;
+  color: $secondary-text;
+  font-size: $font-size-small;
+  padding: 0 10px;
+  @include fade-in;
+  animation-delay: 0.5s;
+
+  .language-selector {
+    cursor: pointer;
+    transition: all $transition-fast;
+
+    &:hover {
+      color: $text-color;
+    }
+  }
+
+  .footer-links {
+    display: flex;
+
+    a {
+      margin-left: 16px;
+      color: $secondary-text;
+      text-decoration: none;
+      transition: all $transition-fast;
+
+      &:hover {
+        color: $text-color;
+        text-decoration: underline;
+      }
+
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+  }
+}
+
+.success-message {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: $success-color;
+  color: $bg-color;
+  padding: $gap-xs $gap-small;
+  border-radius: $input-radius;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  @include slide-up;
+  z-index: 1001;
+
+  &.hidden {
+    display: none;
+  }
+}
+
+.page-transition {
+  animation: fadeOut 0.3s ease-out forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-5px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+/* ============================================
+   СТИЛИ ДЛЯ ЧЕКБОКСА ПОКАЗА ПАРОЛЯ
+   ============================================ */
+
+.password-checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  margin-bottom: 16px;
+  cursor: pointer;
+  user-select: none;
+
+  input[type='checkbox'] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    margin: 0;
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: transparent;
+    border: 2px solid #ececec;
+    border-radius: 2px;
+    position: relative;
+    transition: all 0.2s ease;
+
+    &:checked {
+      background-color: #8ab4f8;
+      border-color: #8ab4f8;
+
+      &::after {
+        content: '';
+        position: absolute;
+        left: 29%;
+        top: 10%;
+        width: 4px;
+        height: 8px;
+        border: solid #202124;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+      }
+    }
+
+    &:hover {
+      border-color: #8ab4f8;
+    }
+  }
+
+  label {
+    font-size: 14px;
+    color: #e8eaed;
+    cursor: pointer;
+    margin: 0;
+    font-weight: 400;
+    letter-spacing: 0.25px;
+  }
+
+  &:hover label {
+    color: #fff;
+  }
+}
+
+/* КРИТИЧЕСКИ ВАЖНО: Отключаем маскировку текста для видимого пароля */
+#password[type='text'] {
+  -webkit-text-security: none !important;
+  text-security: none !important;
+  font-family: 'Roboto', sans-serif !important;
+}
+
+/* Для type="password" оставляем стандартную маскировку браузера */
+#password[type='password'] {
+  -webkit-text-security: disc;
+  text-security: disc;
+}
+
+/* Центрирование кнопки Войти */
+.form-actions.center {
+  justify-content: end !important;
+}
+
+.form-options {
+  @include flex-between;
+  gap: $gap-xs;
+}
+
+/* ============================================
+   АДАПТИВНЫЕ СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ
+   ============================================ */
+
+/* Планшеты и маленькие десктопы (960px и меньше) */
+@media screen and (max-width: 960px) {
+  .auth-card {
+    max-width: 90%;
+    padding: 30px 25px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  }
+
+  .auth-content {
+    @include grid-columns(1fr);
+    gap: 2.5rem;
+    margin-top: 30px;
+  }
+
+  .auth-left {
+    text-align: center;
+    align-items: center;
+    order: 2;
+
+    h1 {
+      font-size: calc($font-size-large * 0.95);
+      margin-bottom: $gap-xs;
+    }
+
+    p {
+      font-size: calc($font-size-medium * 0.95);
+      max-width: 85%;
+    }
+
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+      margin-bottom: $gap-xs;
+    }
+  }
+
+  .auth-right {
+    max-width: 100%;
+    order: 2;
+
+    .policy {
+      max-width: 100%;
+      font-size: calc($font-size-base * 0.95);
+      margin: $gap-small 0;
+    }
+  }
+
+  .auth-footer {
+    flex-direction: column;
+    align-items: center;
+    gap: $gap-xs;
+    padding: 10px 0;
+    margin-top: $gap-medium;
+
+    .footer-links {
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: $gap-small;
+
+      a {
+        margin: 0;
+      }
+    }
+  }
+}
+
+/* Средние мобильные устройства (768px и меньше) */
+@media screen and (max-width: 768px) {
+  .auth-wrapper {
+    padding: 15px;
+  }
+
+  .auth-card {
+    padding: 25px 20px;
+    max-width: 95%;
+  }
+
+  .auth-header {
+    padding-bottom: 15px;
+    font-size: calc($font-size-base * 0.95);
+
+    .auth-logo {
+      width: 22px;
+      height: 22px;
+    }
+  }
+
+  .auth-content {
+    gap: 2rem;
+    margin-top: 25px;
+  }
+
+  .auth-left {
+    h1 {
+      font-size: calc($font-size-large * 0.9);
+      margin-bottom: $gap-xxs;
+    }
+
+    p {
+      font-size: calc($font-size-medium * 0.9);
+      max-width: 90%;
+    }
+  }
+
+  .form-group {
+    label {
+      font-size: calc($font-size-base * 0.95);
+    }
+
+    input {
+      font-size: 16px; /* Предотвращает увеличение в iOS */
+      padding: 14px 12px;
+    }
+  }
+
+  .btn-primary {
+    padding: 14px 24px;
+    font-size: calc($font-size-base * 0.95);
+    align-self: flex-end;
+    justify-content: flex-end;
+  }
+}
+
+/* Маленькие мобильные устройства (576px и меньше) - КЛЮЧЕВОЕ ИЗМЕНЕНИЕ ЗДЕСЬ */
+@media screen and (max-width: 576px) {
+  .auth-wrapper {
+    padding: 0; /* Убираем отступы у обертки */
+  }
+
+  .auth-card {
+    width: 100%;
+    min-height: 100vh; /* Растягиваем на всю высоту экрана */
+    border-radius: 0; /* Убираем скругления углов */
+    box-shadow: none; /* Убираем тень на мобильных */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Распределяем контент по высоте */
+  }
+
+  .auth-header {
+    font-size: calc($font-size-base * 0.9);
+    padding-bottom: 12px;
+    padding-top: 5px; /* Небольшой отступ сверху */
+
+    .auth-logo {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .auth-content {
+    gap: 1.5rem;
+    margin-top: 20px;
+    flex: 1; /* Занимает доступное пространство */
+  }
+
+  .auth-left {
+    margin: -10rem 0 -15rem 0;
+    h1 {
+      font-size: calc($font-size-large * 0.85);
+      margin: $gap-xs 0 $gap-xxs;
+    }
+
+    p {
+      font-size: calc($font-size-medium * 0.85);
+      max-width: 95%;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+    }
+  }
+
+  .auth-right {
+    .policy {
+      font-size: calc($font-size-base * 0.9);
+      line-height: 1.4;
+      margin: $gap-xs 0;
+    }
+  }
+
+  .form-group {
+    margin-bottom: $gap-xxs;
+    margin-top: 5rem;
+
+    label {
+      font-size: calc($font-size-base * 0.9);
+      padding-bottom: 1rem;
+    }
+
+    input {
+      padding: 13px 12px;
+    }
+  }
+
+  .link {
+    font-size: calc($font-size-base * 0.9);
+  }
+
+  .btn-primary {
+    padding: 13px 20px;
+    font-size: calc($font-size-base * 0.9);
+    align-self: flex-end;
+    justify-content: flex-end;
+  }
+
+  .form-actions {
+    flex-direction: row;
+    gap: $gap-xs;
+  }
+
+  .auth-footer {
+    font-size: calc($font-size-small * 0.9);
+    gap: $gap-xxs;
+    margin-top: auto; /* Футер прижимается к низу */
+    padding-top: $gap-small;
+
+    .footer-links {
+      gap: $gap-xs;
+    }
+  }
+
+  .success-message {
+    bottom: 15px;
+    right: 15px;
+    left: 15px;
+    text-align: center;
+    padding: 12px 16px;
+  }
+}
+
+/* Очень маленькие устройства (360px и меньше) */
+@media screen and (max-width: 360px) {
+  .auth-card {
+    padding: 18px 14px;
+  }
+
+  .auth-header {
+    font-size: calc($font-size-base * 0.85);
+    padding-bottom: 10px;
+  }
+
+  .auth-left {
+    h1 {
+      font-size: calc($font-size-large * 0.8);
+    }
+
+    p {
+      font-size: calc($font-size-medium * 0.8);
+    }
+  }
+
+  .form-group {
+    input {
+      padding: 12px 10px;
+      font-size: 15px;
+    }
+  }
+
+  .btn-primary {
+    padding: 12px 16px;
+    font-size: calc($font-size-base * 0.85);
+  }
+
+  .auth-footer {
+    font-size: calc($font-size-small * 0.85);
+    padding-top: $gap-xs;
+  }
+}
+
+/* Портретная ориентация на мобильных устройствах */
+@media screen and (max-height: 600px) and (orientation: portrait) {
+  .auth-wrapper {
+    padding: 0;
+  }
+
+  .auth-card {
+    min-height: 100vh;
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+
+  .auth-content {
+    margin-top: 15px;
+    gap: 1rem;
+  }
+
+  .auth-left {
+    margin-top: 1rem;
+
+    p {
+      margin-bottom: 0;
+    }
+  }
+
+  .policy {
+    margin: $gap-xs 0 !important;
+  }
+
+  .auth-footer {
+    padding-top: $gap-xs;
+  }
+}
+
+/* Ландшафтная ориентация на мобильных устройствах */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+  .auth-wrapper {
+    padding: 0;
+  }
+
+  .auth-card {
+    min-height: 100vh;
+    max-height: 100vh;
+    overflow-y: auto;
+    padding: 15px;
+  }
+
+  .auth-content {
+    gap: 1rem;
+    margin-top: 15px;
+  }
+
+  .auth-left {
+    display: none; /* Скрываем левую колонку в ландшафтном режиме */
+  }
+
+  .auth-right {
+    max-width: 100%;
+  }
+
+  .auth-footer {
+    margin-top: $gap-xs;
+    padding-top: $gap-xs;
+  }
+}
+
+/* Очень маленькая высота экрана */
+@media screen and (max-height: 400px) {
+  .auth-card {
+    padding: 10px 12px;
+  }
+
+  .auth-header {
+    padding-bottom: 8px;
+  }
+
+  .auth-content {
+    margin-top: 10px;
+    gap: 0.8rem;
+  }
+
+  .auth-footer {
+    padding-top: 8px;
+  }
+}
+
+/* Поддержка темной темы на уровне системы */
+@media (prefers-color-scheme: dark) {
+  .auth-card {
+    background: darken($card-bg, 2%);
+  }
+
+  .auth-header {
+    border-bottom-color: #2d3134;
+  }
+}
+
+/* Улучшение доступности для сенсорных устройств */
+@media (pointer: coarse) {
+  .btn-primary,
+  .link,
+  .password-checkbox-wrapper,
+  .language-selector {
+    min-height: 20px; /* Минимальный размер касания */
+    min-width: 20px;
+  }
+
+  input,
+  textarea,
+  select {
+    font-size: 16px !important; /* Предотвращает увеличение в iOS */
+  }
+}
+
+/* Для iOS Safari - фикс 100vh */
+@supports (-webkit-touch-callout: none) {
+  .auth-card {
+    min-height: -webkit-fill-available;
+  }
+
+  .auth-wrapper {
+    min-height: -webkit-fill-available;
+  }
+}

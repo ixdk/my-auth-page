@@ -1,76 +1,149 @@
-// =============================================================================
-// String Replace
-// =============================================================================
-
-@function str-replace($string, $search, $replace: '') {
-  $index: str-index($string, $search);
-
-  @if $index {
-    @return str-slice($string, 1, $index - 1) + $replace +
-      str-replace(
-        str-slice($string, $index + str-length($search)),
-        $search,
-        $replace
-      );
-  }
-
-  @return $string;
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-// =============================================================================
-// Font Face
-// =============================================================================
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
 
-@mixin font-face(
-  $name,
-  $path,
-  $weight: null,
-  $style: null,
-  $exts: eot woff ttf svg
-) {
-  $src: null;
+@mixin flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-  $extmods: (
-    eot: '?',
-    svg: '#' + str-replace($name, ' ', '_'),
-  );
+@mixin grid-columns($columns) {
+  display: grid;
+  grid-template-columns: $columns;
+}
 
-  $formats: (
-    otf: 'opentype',
-    ttf: 'truetype',
-  );
+@mixin link-style {
+  color: $primary-color;
+  text-decoration: none;
+  font-size: $font-size-base;
+  transition: all $transition-fast;
 
-  @each $ext in $exts {
-    $extmod: if(
-      map-has-key($extmods, $ext),
-      $ext + map-get($extmods, $ext),
-      $ext
-    );
-    $format: if(map-has-key($formats, $ext), map-get($formats, $ext), $ext);
-    $src: append(
-      $src,
-      url(quote($path + '.' + $extmod)) format(quote($format)),
-      comma
-    );
-  }
-
-  @font-face {
-    font-family: quote($name);
-    font-style: $style;
-    font-weight: $weight;
-    font-display: swap;
-    src: $src;
+  &:hover {
+    text-decoration: underline;
+    opacity: 0.9;
   }
 }
 
-@mixin object-fit($fit: fill, $position: null) {
-  -o-object-fit: $fit;
-  object-fit: $fit;
-  @if $position {
-    -o-object-position: $position;
-    object-position: $position;
-    font-family: 'object-fit: #{$fit}; object-position: #{$position}';
-  } @else {
-    font-family: 'object-fit: #{$fit}';
+@mixin button-primary {
+  background: $primary-color;
+  color: $bg-color;
+  border: none;
+  border-radius: $button-radius;
+  padding: 10px 28px;
+  font-size: $font-size-base;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: $primary-hover;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(138, 180, 248, 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    background: $secondary-text;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+@mixin input-style {
+  background: transparent;
+  border: 1px solid $border-color;
+  border-radius: $input-radius;
+  padding: 14px;
+  color: $text-color;
+  font-size: $font-size-medium;
+  transition: all $transition-fast;
+
+  &:focus {
+    border-color: $border-focus;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(138, 180, 248, 0.1);
+  }
+
+  &.error {
+    border-color: $error-color;
+
+    &:focus {
+      box-shadow: 0 0 0 2px rgba(242, 139, 130, 0.1);
+    }
+  }
+}
+
+@mixin fade-in {
+  animation: fadeIn $transition-medium ease-in-out;
+}
+
+@mixin slide-up {
+  animation: slideUp $transition-medium ease-out;
+}
+
+@mixin slide-down {
+  animation: slideDown $transition-medium ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-5px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(5px);
   }
 }
