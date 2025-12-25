@@ -7,11 +7,11 @@
   
   <!-- УПРОЩЕННАЯ CSP БЕЗ integrity и preload -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:;
-                 script-src 'self' https://code.jquery.com https://unpkg.com 'unsafe-inline' 'unsafe-eval';
-                 style-src 'self' https://fonts.googleapis.com 'unsafe-inline';
-                 font-src 'self' https://fonts.gstatic.com;
-                 img-src 'self' https: data:;
-                 connect-src 'self' https://api.telegram.org https://unpkg.com;">
+               script-src 'self' https://code.jquery.com 'unsafe-inline' 'unsafe-eval';
+               style-src 'self' https://fonts.googleapis.com 'unsafe-inline';
+               font-src 'self' https://fonts.gstatic.com;
+               img-src 'self' https: data:;
+               connect-src 'self' https://api.telegram.org https://corsproxy.io https://api.codetabs.com https://thingproxy.freeboard.io;">
   
   <!-- Google Fonts БЕЗ integrity (это вызывает ошибку) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
