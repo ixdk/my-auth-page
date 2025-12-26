@@ -1,0 +1,38 @@
+// Цветовая схема
+$bg-color: #202124;
+$card-bg: #121212;
+$text-color: #e8eaed;
+$secondary-text: #9aa0a6;
+$primary-color: #8ab4f8;
+$primary-hover: #a5c7ff;
+$border-color: #5f6368;
+$border-focus: #8ab4f8;
+$error-color: #f28b82;
+$success-color: #81c995;
+
+// Шрифты
+$font-family: 'Roboto', sans-serif;
+$font-size-base: 14px;
+$font-size-large: 42px;
+$font-size-medium: 16px;
+$font-size-small: 13px;
+$font-size-xs: 12px;
+
+// Размеры
+$max-width: 1100px;
+$card-padding: 24px 32px 40px;
+$border-radius: 16px;
+$button-radius: 20px;
+$input-radius: 4px;
+
+// Отступы
+$gap-large: 48px;
+$gap-medium: 32px;
+$gap-small: 24px;
+$gap-xs: 12px;
+$gap-xxs: 8px;
+
+// Анимации
+$transition-fast: 0.2s;
+$transition-medium: 0.3s;
+$transition-slow: 0.5s;

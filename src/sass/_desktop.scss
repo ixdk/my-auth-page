@@ -1,0 +1,10 @@
+// Дополнительные стили для десктопной версии
+@media (min-width: 1025px) {
+  .auth-card {
+    margin: 0 auto;
+  }
+
+  .auth-content {
+    min-height: 400px;
+  }
+}
